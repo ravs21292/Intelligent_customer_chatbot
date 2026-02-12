@@ -1,0 +1,47 @@
+name: Training Pipeline
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # Weekly on Sunday 2 AM
+  workflow_dispatch:
+    inputs:
+      model_type:
+        description: 'Model type to train'
+        required: true
+        default: 'intent_classifier'
+
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Trigger SageMaker training
+      run: |
+        python -m src.training.training_pipeline --model-type ${{ github.event.inputs.model_type }}
+    
+    - name: Evaluate model
+      run: |
+        python -m src.intent_classification.evaluation
+    
+    - name: Register model if improved
+      run: |
+        python cicd/scripts/register_model.py
+

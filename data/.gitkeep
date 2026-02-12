@@ -1,0 +1,4 @@
+# Data directory
+# Raw, processed, and labeled data stored here
+# Tracked with DVC for versioning
+

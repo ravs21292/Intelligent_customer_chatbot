@@ -1,0 +1,48 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v
+    
+    - name: Build Docker image
+      run: |
+        docker build -t customer-chatbot-api:latest -f infrastructure/docker/Dockerfile.api .
+    
+    - name: Deploy to ECS/EC2
+      run: |
+        echo "Deploy application to AWS"
+        # Add actual deployment commands
+    
+    - name: Update SageMaker endpoints
+      run: |
+        python cicd/scripts/update_endpoints.py
+
