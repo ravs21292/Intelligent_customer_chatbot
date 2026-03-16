@@ -256,18 +256,11 @@ pytest tests/ --cov=src --cov-report=html
 - SageMaker Model Monitor for drift detection
 - Custom metrics for business KPIs
 
-## 🤝 Contributing
-
-1. Create a feature branch
-2. Make your changes
-3. Add tests
-4. Submit a pull request
-
 ## 📄 License
 
 MIT License
 
-## 👤 Author
+## 👤 Author:Ravinder Singh
 
 Built for interview showcase demonstrating production ML systems expertise.
 
