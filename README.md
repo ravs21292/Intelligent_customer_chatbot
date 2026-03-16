@@ -1,5 +1,5 @@
 # Intelligent Customer Support Chatbot with Multi-Model Strategy
-
+This project is part of my backend engineering portfolio. The backend architecture, API design, and implementation were designed and built by me while exploring and learning core backend development concepts.
 ##  Project Overview
 
 An intelligent customer support chatbot that uses multiple LLM strategies (pre-trained, fine-tuned, RAG) based on query type. Includes sentiment analysis, intent classification, and automated escalation with full MLOps pipeline for continuous learning.
